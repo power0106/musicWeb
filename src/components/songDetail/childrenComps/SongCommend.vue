@@ -1,6 +1,6 @@
 <template>
   <div class="user_commend">
-    <ModuleTitle :title="title" :isMore="false" :size="14" style="paddingLeft: 10px"></ModuleTitle>
+    <ModuleTitle :title="title" :isMore="false" :size="14" style="paddingLeft: 10px" v-if="head"></ModuleTitle>
     <div v-if="songCommend.length > 0">
       <div class="user_commend_item" v-for="(item,index) in songCommend" :key="index">
         <div class="left">
@@ -52,6 +52,10 @@ export default {
       default(){
         return []
       }
+    },
+    head:{
+      type: Boolean,
+      default: true
     }
   },
   filters:{

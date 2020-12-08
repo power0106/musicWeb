@@ -7,6 +7,7 @@
         <i class="el-icon-video-play icon"></i>
       </div>
     </div>
+    <!-- <MainThead :titles="title"></MainThead> -->
     <div v-if="newSongData.length === 0">
       <Loading></Loading>
     </div>
@@ -23,7 +24,7 @@
       <div class="time">{{item.duration | getDuration}}</div>
     </div>
 
-    <div class="show_more" v-if="newSongData.length!==0  && isShow" @click="showMore">
+    <div class="show_more" v-if="newSongData.length!==0  && isShow && show" @click="showMore">
       展开全部{{newSongData.length}}首歌曲
       <i class="el-icon-arrow-right"></i>
     </div>
@@ -50,12 +51,21 @@ export default {
       type: String,
       default: "热门歌曲",
     },
+    show: {
+      type: Boolean,
+      default: false
+    }
   },
   data(){
     return{
       isShow: true,
       limitEnd: 10,
+      titles: "",
     }
+  },
+  created(){
+    this.titles = this.title
+    console.log(this.title)
   },
   filters:{
     getDuration(value){

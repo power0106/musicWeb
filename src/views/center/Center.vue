@@ -49,6 +49,7 @@ export default {
         //设置动画名称
         this.transitionName = "slide-back";
       }
+
      
     },
   },
@@ -100,6 +101,8 @@ export default {
   opacity: 0;
   transform: translate3d(0,-100%, 0);
 }
+
+
 
 #center {
   height: 680px;

@@ -53,7 +53,7 @@ export function getSongDetail(id) {
 }
 
 /**
- * 获取歌曲评论信息
+ * 获取歌曲专辑评论信息
  */
 export function getSongCommend(id) {
     return requset({
@@ -65,7 +65,7 @@ export function getSongCommend(id) {
 }
 
 /**
- * 获取歌曲收藏者
+ * 获取歌曲专辑收藏者
  */
 export function getSubscriber(id) {
     return requset({
@@ -109,6 +109,44 @@ export function getMusicMenu(ids) {
         url: "/song/detail",
         params: {
             ids
+        }
+    })
+}
+
+/**
+ * 获取歌词
+ */
+export function getLylic(id) {
+    return requset({
+        url: "/lyric",
+        params: {
+            id
+        }
+    })
+}
+
+/**
+ * 获取歌曲评论
+ */
+export function getMusicComment(id, limit, offset) {
+    return requset({
+        url: "/comment/music",
+        params: {
+            id,
+            limit,
+            offset
+        }
+    })
+}
+
+/**
+ * 获取相似歌曲
+ */
+export function getSimiSong(id) {
+    return requset({
+        url: "/simi/song",
+        params: {
+            id
         }
     })
 }

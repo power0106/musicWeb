@@ -13,30 +13,35 @@
         <NewSongList
           title="热门歌曲"
           :newSongData="allNewSongData"
+          :show="true"
         ></NewSongList>
       </el-tab-pane>
       <el-tab-pane label="华语" name="chinese">
         <NewSongList
           title="华语歌曲"
           :newSongData="chineseSongData"
+          :show="true"
         ></NewSongList>
       </el-tab-pane>
       <el-tab-pane label="欧美" name="europe">
         <NewSongList
           title="欧美歌曲"
           :newSongData="europeSongData"
+          :show="true"
         ></NewSongList>
       </el-tab-pane>
       <el-tab-pane label="韩国" name="korea">
         <NewSongList
           title="韩国歌曲"
           :newSongData="koreaSongData"
+          :show="true"
         ></NewSongList>
       </el-tab-pane>
       <el-tab-pane label="日本" name="japan">
         <NewSongList
           title="日本歌曲"
           :newSongData="japanSongData"
+          :show="true"
         ></NewSongList>
       </el-tab-pane>
     </el-tabs>

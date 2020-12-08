@@ -5,20 +5,6 @@
  * @param: 
  * @return: 
  */
-/*
- * @name: 
- * @test: test font
- * @msg: 
- * @param: 
- * @return: 
- */
-/*
- * @name: 
- * @test: test font
- * @msg: 
- * @param: 
- * @return: 
- */
 export default {
     mode: 'history',
     routes: [{
@@ -99,7 +85,24 @@ export default {
             meta: {
                 index: -1
             }
+        },
+        {
+            path: '/lylic/:id',
+            name: '歌词详情',
+            component: () =>
+                import ('@/components/lylic/Lylic'),
+            meta: {
+                index: -1
+            }
+        },
+        {
+            path: '/search/:keywords',
+            name: '搜索',
+            component: () =>
+                import ("@/components/search/Search"),
+            meta: {
+                index: -1
+            }
         }
-
     ]
 }

@@ -1,13 +1,8 @@
-<!--
- * @name: 
- * @test: test font
- * @msg: 
- * @param: 
- * @return: 
--->
+
 <template>
   <div class="title" :style="{width: width+'%'}">
     <h3 :style="{fontSize: size+'px'}">{{title}}</h3>
+    <span class="nums" v-if="comment">共{{count | getCount}}条评论</span>
     <div class="more" v-if="isMore">
       <span>更多</span>
       <i class="el-icon-arrow-right"></i>
@@ -16,6 +11,7 @@
 </template>
 
 <script>
+
 export default {
   props:{
     title: {
@@ -33,6 +29,25 @@ export default {
     width:{
       type: Number,
       default: 100
+    },
+    comment: {
+      type: Boolean,
+      default: false
+    },
+    count:{
+      type: Number,
+      default: 0
+    }
+  },
+  filters: {
+    getCount(value){
+      let result = null
+      if(value >= 10000){
+        result = (value / 10000).toFixed(1) +"万"
+      }else{
+        result = value
+      }
+      return result
     }
   }
 };
@@ -59,5 +74,13 @@ export default {
   color: #999;
   font-size: 14px;
   
+}
+.title h3{
+  display: inline-block;
+  margin-right: 15px;
+}
+.nums{
+  color: #666;
+  font-size: 15px;
 }
 </style>

@@ -8,23 +8,45 @@
 <template>
   <div class="bottom_bar">
     <div class="scroll">
-      <el-slider v-model="musicDuration" 
-      :show-tooltip="false" :disabled="isUrl" @change="musicDurationChange" :max="totalDuration"></el-slider>
+      <el-slider
+        v-model="musicDuration"
+        :show-tooltip="false"
+        :disabled="isUrl"
+        @change="musicDurationChange"
+        :max="totalDuration"
+      ></el-slider>
     </div>
 
     <div class="content">
       <div class="left">
         <div class="singimg">
-          <img
-            :src="getMusicMenu.al.picUrl"
-            alt=""
-          />
+          <img :src="getMusicMenu.al.picUrl" alt="" />
+          <div class="m-img">
+            <a href="javascript:void(0)" @click.stop="toLylic">
+              <i
+                class="el-icon-arrow-up"
+                style="color: rgba(255, 255, 255, 0.8)"
+              ></i>
+              <i
+                class="el-icon-arrow-up"
+                style="
+                  color: rgba(255, 255, 255, 0.8);
+                  position: absolute;
+                  top: 12px;
+                  left: 13px;
+                "
+              ></i>
+            </a>
+          </div>
         </div>
         <div class="sing">
-          <div class="name">{{getMusicMenu.ar[0].name}} - {{getMusicMenu.name || getMusicMenu.al.name}}</div>
+          <div class="name">
+            {{ getMusicMenu.ar[0].name }} -
+            {{ getMusicMenu.name || getMusicMenu.al.name }}
+          </div>
           <div class="singtime">
-            <span>{{musicDuration | showTime}}</span> /
-            <span>{{getTime}}</span>
+            <span>{{ musicDuration | showTime }}</span> /
+            <span>{{ getTime }}</span>
           </div>
         </div>
         <div class="icon">
@@ -91,19 +113,19 @@
 
 <script>
 import { mapGetters } from "vuex";
-import {formatDate,songTimeFormat} from "@/until";
+import { formatDate, songTimeFormat } from "@/until";
 export default {
   computed: {
-    ...mapGetters(["getNowMusic", "getMusicMenu"]),
-    getTime(){
-      let date = new Date(this.getMusicMenu.dt)
-      return formatDate(date,"mm:ss")
-    }
+    ...mapGetters(["getNowMusic", "getMusicMenu","getIsPlay"]),
+    getTime() {
+      let date = new Date(this.getMusicMenu.dt);
+      return formatDate(date, "mm:ss");
+    },
   },
-  filters:{
-    showTime(value){
-      return songTimeFormat(value)
-    }
+  filters: {
+    showTime(value) {
+      return songTimeFormat(value);
+    },
   },
   data() {
     return {
@@ -114,43 +136,56 @@ export default {
       totalDuration: 100, //总时长
     };
   },
-  mounted(){
-    this.musicDurationChange()
+  mounted() {
+    this.musicDurationChange();
   },
   methods: {
-    musicDurationChange(){ //监听歌曲播放情况
-      let audio = this.$refs.audio
-      console.log(audio.currentTime)
-      audio.currentTime = this.musicDuration
-      audio.addEventListener("timeupdate",()=>{
-        this.totalDuration = audio.duration
+    toLylic(){ //路由跳转，去到歌曲详情
+      this.$router.push({
+        path: '/lylic/'+this.getMusicMenu.id+''
+      })
+    },
+    musicDurationChange() {
+      //监听歌曲播放情况
+      let audio = this.$refs.audio;
+      console.log(audio.currentTime);
+      audio.currentTime = this.musicDuration;
+      audio.addEventListener("timeupdate", () => {
+        this.totalDuration = audio.duration;
         this.musicDuration = audio.currentTime;
 
-        if(audio.currentTime >= audio.duration){ //监听播放完
-          this.isplay = false
-          this.musicDuration = 0
-
+        if (audio.currentTime >= audio.duration) {
+          //监听播放完
+          this.isplay = false;
+          this.$store.commit("setPlay",this.isplay)
+          this.musicDuration = 0;
         }
-      })
+      });
+      if(!this.isplay){return;} //如果没有在播放，终止操作
+      this.isplay = true 
+      this.$store.commit("setPlay",this.isplay)
       // console.log(audio.currentTime)
     },
-    playClick(){
-      if(this.getNowMusic !== ""){
-        this.isplay = !this.isplay
+    playClick() {
+      if (this.getNowMusic !== "") {
         if (!this.$refs.audio.paused) {
           this.$refs.audio.pause();
         } else {
           this.$refs.audio.play();
         }
+        this.isplay = !this.isplay;
+        this.$store.commit("setPlay",this.isplay)
       }
-    }
+    },
   },
-  watch:{
-    getNowMusic() { //监听是否有歌曲路径变化
+  watch: {
+    getNowMusic() {
+      //监听是否有歌曲路径变化
       this.isUrl = false;
       this.isplay = true;
+      this.$store.commit("setPlay",this.isplay)
     },
-  }
+  },
 };
 </script>
 
@@ -191,58 +226,75 @@ export default {
   left: 10px;
 }
 
-.content{
+.content {
   display: flex;
   justify-content: space-between;
 }
-.left{
+.left {
   display: flex;
-
 }
-.singimg{
+.singimg {
   margin-left: 10px;
   margin-top: 10px;
+  width: 45px;
+  height: 45px;
+  position: relative;
+}
+.singimg:hover .m-img {
+  display: block;
 }
 .singimg img {
   width: 45px;
   height: 45px;
 }
-.sing{
+.m-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  line-height: 62px;
+  font-size: 20px;
+  border-radius: 5px;
+  display: none;
+}
+.sing {
   margin-left: 15px;
   margin-top: 10px;
   font-size: 14px;
   margin-right: 10px;
 }
-.name{
+.name {
   margin-bottom: 5px;
 }
-.icon{
+.icon {
   margin-left: 10px;
   margin-top: 25px;
 }
-.play{
+.play {
   margin-top: 18px;
-
 }
 .play i {
   font-size: 35px;
   color: #5192fe;
 }
-.right{
+.right {
   display: flex;
   align-items: center;
   margin-top: 5px;
   margin-right: 35px;
 }
-.more-btn{
-    padding: 0;
-    width: 60px;
-    height: 20px;
-    background: none;
-    color: #888;
-    margin-right: 8px;
+.more-btn {
+  padding: 0;
+  width: 60px;
+  height: 20px;
+  background: none;
+  color: #888;
+  margin-right: 8px;
 }
-.ic{
+.ic {
   margin-right: 10px;
 }
 </style>

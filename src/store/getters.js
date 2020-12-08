@@ -1,3 +1,10 @@
+/*
+ * @name: 
+ * @test: test font
+ * @msg: 
+ * @param: 
+ * @return: 
+ */
 export default {
     getNowMusic(state) {
         if (state.nowmusic === null) {
@@ -24,5 +31,8 @@ export default {
         } else {
             return state.musicmenu
         }
+    },
+    getIsPlay(state) {
+        return state.isplay
     }
 }
