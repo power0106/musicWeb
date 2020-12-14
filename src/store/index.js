@@ -1,10 +1,3 @@
-/*
- * @name: 
- * @test: test font
- * @msg: 
- * @param: 
- * @return: 
- */
 import Vue from 'vue'
 import Vuex from 'vuex'
 

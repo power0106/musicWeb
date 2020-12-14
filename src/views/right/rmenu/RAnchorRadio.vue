@@ -3,7 +3,7 @@
   <div class="r_anchor_radio">
     <Swiper :banners="banners"></Swiper>
     <TitleIcon :categories="categories"></TitleIcon>
-    <ModuleTitle title="精选电台" :width="90"></ModuleTitle>
+    <ModuleTitle title="精选电台" :width="90" :isMore="false"></ModuleTitle>
     <div class="card">
       <Card
         :width="22"
@@ -18,39 +18,39 @@
       </Card>
     </div>
 
-    <ModuleTitle title="付费精选" :width="90"></ModuleTitle>
+    <ModuleTitle :title="pay" :width="90" @click.native="payClick"></ModuleTitle>
     <PayCard :payData="paygiftData"></PayCard>
-    <ModuleTitle title="电台个性推荐" :width="90"></ModuleTitle>
+    <ModuleTitle title="电台个性推荐" :width="90" :isMore="false"></ModuleTitle>
     <div class="card">
       <Card v-for="(item,index) in recommendsData" :key="index" :item="item">
         <span class="count">{{ item.name }}</span>
       </Card>
     </div>
-    <ModuleTitle title="创作|翻唱" :width="90"></ModuleTitle>
+    <ModuleTitle title="创作|翻唱" :width="90" @click.native="writeClick"></ModuleTitle>
     <div class="card">
       <Card v-for="(item,index) in writeCoverData" :key="index" :item="item">
         <span class="count">{{ item.name }}</span>
       </Card>
     </div>
-    <ModuleTitle title="3D|电子" :width="90"></ModuleTitle>
+    <ModuleTitle title="3D|电子" :width="90" @click.native="eleClick"></ModuleTitle>
     <div class="card">
       <Card v-for="(item,index) in electronData" :key="index" :item="item">
         <span class="count">{{ item.name }}</span>
       </Card>
     </div>
-    <ModuleTitle title="音乐故事" :width="90"></ModuleTitle>
+    <ModuleTitle title="音乐故事" :width="90" @click.native="mucClick"></ModuleTitle>
     <div class="card">
       <Card v-for="(item,index) in musicStoryData" :key="index" :item="item">
         <span class="count">{{ item.name }}</span>
       </Card>
     </div>
-    <ModuleTitle title="情感调频" :width="90"></ModuleTitle>
+    <ModuleTitle title="情感调频" :width="90" @click.native="qingClick"></ModuleTitle>
     <div class="card">
       <Card v-for="(item,index) in emotionalFM" :key="index" :item="item">
         <span class="count">{{ item.name }}</span>
       </Card>
     </div>
-    <ModuleTitle title="二次元" :width="90"></ModuleTitle>
+    <ModuleTitle title="二次元" :width="90" @click.native="erClick"></ModuleTitle>
     <div class="card">
       <Card v-for="(item,index) in cospa" :key="index" :item="item">
         <span class="count">{{ item.name }}</span>
@@ -95,6 +95,17 @@ export default {
       musicStoryData: [], //音乐故事数据
       emotionalFM: [], //情感调频数据
       cospa: [], //二次元数据
+      pay: "",
+      write: "",
+      writeId: 2001,
+      electron: "",
+      electronId: 10002,
+      musicStory: "",
+      musicStoryId: 2,
+      qinggan: "",
+      qingganId: 3,
+      cospas: "",
+      cospaId: 3001
     };
   },
   created() {
@@ -157,39 +168,95 @@ export default {
     getPaygift() {
       getPaygift().then((res) => {
         // console.log(res)
+        this.pay = "付费精选";
         this.paygiftData.push(...res.data.data.list);
       });
     },
     getWriteCover(type) {  //获取创作翻唱数据
       getRecommendType(type).then((res) => {
         // console.log(res);
+        this.write = "创作翻唱"
         this.writeCoverData.push(...res.data.djRadios.slice(0, 6));
       });
     },
     get3DERP(type){ //获取3d电子数据
       getRecommendType(type).then(res=>{
         // console.log(res)
+        this.electron = "3d电子"
         this.electronData.push(...res.data.djRadios.slice(0,6))
       })
     },
     getMusicStory(type){ //获取3d电子数据
       getRecommendType(type).then(res=>{
         // console.log(res)
+        this.musicStory = "音乐故事"
         this.musicStoryData.push(...res.data.djRadios.slice(0,6))
       })
     },
     getEmotionalFM(type){ //获取3d电子数据
       getRecommendType(type).then(res=>{
         // console.log(res)
+        this.qinggan = "情感调频"
         this.emotionalFM.push(...res.data.djRadios.slice(0,6))
       })
     },
     getCospa(type){ //获取3d电子数据
       getRecommendType(type).then(res=>{
         // console.log(res)
+        this.cospas = "二次元"
         this.cospa.push(...res.data.djRadios.slice(0,6))
       })
     },
+
+    /**
+     * 事件处理
+     */
+    payClick(){
+      this.$router.push({
+        path: "/moreList/" +this.pay
+      })
+    },
+    writeClick(){
+      this.$router.push({
+        path: "/moreList/" +this.write,
+        query: {
+          cateId: this.writeId
+        }
+      })
+    },
+    eleClick(){
+      this.$router.push({
+        path: "/moreList/" +this.electron,
+        query: {
+          cateId: this.electronId
+        }
+      })
+    },
+    mucClick(){
+      this.$router.push({
+        path: "/moreList/" +this.musicStory,
+        query: {
+          cateId: this.musicStoryId
+        }
+      })
+    },
+    qingClick(){
+      this.$router.push({
+        path: "/moreList/" +this.qinggan,
+        query: {
+          cateId: this.qingganId
+        }
+      })
+    },
+    erClick(){
+      this.$router.push({
+        path: "/moreList/" +this.cospas,
+        query: {
+          cateId: this.cospaId
+        }
+      })
+    }
+
     
   },
 };

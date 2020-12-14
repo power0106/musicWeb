@@ -1,18 +1,21 @@
 
 <template>
   <div class="personalized">
-    <ModuleTitle title="独家放送"></ModuleTitle>
-    <MusicListItem v-for="(item,index) in personalizedData" :key="index"  :musicListItemData="item" :width="32"></MusicListItem>
+    <ModuleTitle :title="modulename" @click.native="moduleClick"></ModuleTitle>
+    <PersonalizedList v-for="(item,index) in personalizedData" :key="index" :musicListItemData="item"></PersonalizedList>
+    <!-- <MusicListItem v-for="(item,index) in personalizedData" :key="index"  :musicListItemData="item" :width="32"></MusicListItem> -->
   </div>
 </template>
 
 <script>
 import ModuleTitle from "../moduleTitle/ModuleTitle"
-import MusicListItem from "../musiclist/MusicListItem"
+
+import PersonalizedList from "./PersonalizedList"
+// import MusicListItem from "../musiclist/MusicListItem"
 export default {
   components:{
     ModuleTitle,
-    MusicListItem
+    PersonalizedList
   },
   props:{
     personalizedData:{
@@ -20,6 +23,22 @@ export default {
       default(){
         return []
       }
+    },
+    modulename:{
+      type: String,
+      default: "独家放送a"
+    }
+  },
+  data(){
+    return{
+      cateId: ""
+    }
+  },
+  methods:{
+    moduleClick(){
+      this.$router.push({
+        path: `/moreList/${this.modulename}`
+      })
     }
   }
 }

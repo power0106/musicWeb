@@ -1,24 +1,11 @@
-<!--
- * @name: 
- * @test: test font
- * @msg: 
- * @param: 
- * @return: 
--->
-<!--
- * @name: 
- * @test: test font
- * @msg: 
- * @param: 
- * @return: 
--->
+
 
 <template>
-  <div id="home">
+  <div id="home" ref="home">
     <RightTop></RightTop>
     <transition :name="transitionName">
-      <keep-alive exclude="songDetail">
-        <router-view></router-view>
+      <keep-alive exclude="songDetail,SingerDetail">
+        <router-view :home="home"></router-view>
       </keep-alive>
     </transition>
   </div>
@@ -32,8 +19,12 @@ export default {
   },
   data(){
     return{
-      transitionName: 'slide-left'
+      transitionName: 'slide-left',
+      home: null,
     }
+  },
+  mounted(){
+    this.home = this.$refs.home
   },
   watch:{
     $route(to,from){
@@ -108,6 +99,7 @@ export default {
 }
 #home{
   padding: 20px 0px;
+
 }
 ::-webkit-scrollbar {
   width: 8px;

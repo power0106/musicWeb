@@ -1,7 +1,8 @@
 
+
 <template>
   <div class="r_rank">
-    <MuduleTitle title="榜单" :width="90"></MuduleTitle>
+    <MuduleTitle title="榜单" :width="90" :isMore="false"></MuduleTitle>
     <div class="rank">
       <Rank
         :rank-data="rank"
@@ -12,13 +13,14 @@
         <RankList :id="item.id"></RankList>
       </Rank>
     </div>
-    <MuduleTitle title="全球媒体榜" :width="90"></MuduleTitle>
+    <MuduleTitle title="全球媒体榜" :width="90" :isMore="false"></MuduleTitle>
     <div class="ranksking_list">
       <MusicListItem
         v-for="(item, index) in globalRank"
         :key="index"
         :musicListItemData="item"
         :right-txt="true"
+        @click.native="rankClick(item.id)"
       ></MusicListItem>
     </div>
   </div>
@@ -56,6 +58,7 @@ export default {
         this.globalRank.push(...res.data.list.slice(6, 32));
       });
     },
+
   },
 };
 </script>

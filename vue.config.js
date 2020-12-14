@@ -1,15 +1,5 @@
 module.exports = {
-    // configureWebpack:{
-    //     resolve:{
-    //         alias:{
-    //             'assets':'@/assets',
-    //             'common':'@/common',
-    //             'components':'@/components',
-    //             'network':'@/network',
-    //             'views':'@/views',
-    //         }
-    //     }
-    // },
+    publicPath: './',
     devServer: {
         proxy: { //解决跨域问题
             '/api': {

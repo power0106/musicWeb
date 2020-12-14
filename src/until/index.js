@@ -1,10 +1,3 @@
-/*
- * @name: 
- * @test: test font
- * @msg: 
- * @param: 
- * @return: 
- */
 /**
  * 防抖处理
  */

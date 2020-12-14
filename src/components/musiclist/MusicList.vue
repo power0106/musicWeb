@@ -1,6 +1,6 @@
 <template>
   <div class="music_list">
-    <ModuleTitle title="推荐歌单"></ModuleTitle>
+    <ModuleTitle title="推荐歌单" @click.native="tuiClick"></ModuleTitle>
     <MusicListItem
       v-for="(item, index) in musicListData"
       :key="index"
@@ -27,6 +27,13 @@ export default {
     ModuleTitle,
     MusicListItem,
   },
+  methods:{
+    tuiClick(){
+      this.$router.push({
+        path: "rSongList"
+      })
+    }
+  }
 };
 </script>
 

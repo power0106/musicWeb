@@ -1,5 +1,5 @@
 <template>
-    <div class="card_item" :style="{width: width+'%'}">
+    <div class="card_item" :style="{width: width+'%'}" @click.prevent="djClick(item.id)">
       <div class="img">
         <a href="">
           <img v-lazy="item.picUrl" alt="">
@@ -61,6 +61,13 @@ export default {
   computed:{
     getTitle(){
       return this.item.rcmdtext || this.item.name
+    }
+  },
+  methods:{
+    djClick(id){
+      this.$router.push({
+        path: "/anchor/"+id
+      })
     }
   }
 }

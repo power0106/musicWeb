@@ -1,19 +1,19 @@
 <template>
-  <div>
+  <div class="song_detail">
     <div class="song_detail_info_left">
       <a href="">
-        <img :src="songDetailData.coverImgUrl" alt="" />
+        <img :src="getCoverImgUrl" alt="" />
       </a>
     </div>
 
-    <div class="song_detail_info_right">
+    <div class="song_detail_info_right" v-if="isShowBase">
       <div class="title">
-        <span class="gedan">歌单</span>
+        <span class="gedan">{{themetype}}</span>
         <span class="tou">{{ songDetailData.name }}</span>
         <div class="title_right">
           <div class="song_num">
             歌曲数
-            <p>{{ songDetailData.trackCount }}</p>
+            <p>{{ getTrackCount  }}</p>
           </div>
           <div class="play_num">
             播放数
@@ -24,9 +24,9 @@
 
       <div class="creator">
         <a href="">
-          <img :src="songDetailData.creator.avatarUrl" alt="" />
+          <img :src="getCreateImg" alt="" />
         </a>
-        <span class="createname">{{ songDetailData.creator.nickname }}</span>
+        <span class="createname">{{ songDetailData.dj.nickname }}</span>
         <span>{{ songDetailData.createTime | showDate }}</span>
       </div>
 
@@ -35,7 +35,7 @@
           >播放全部</el-button
         >
         <el-button size="small" icon="el-icon-star-off"
-          >收藏({{ songDetailData.subscribedCount }})</el-button
+          >收藏({{ getSubscribedCount }})</el-button
         >
         <el-button size="small" icon="el-icon-thumb"
           >分享({{ songDetailData.shareCount }})</el-button
@@ -43,7 +43,7 @@
         <el-button size="small" icon="el-icon-download">下载全部</el-button>
       </div>
 
-      <div class="tags">
+      <div class="tags" v-if="tags">
         标签：<span v-for="(item, index) in songDetailData.tags" :key="index"
           >{{ item
           }}<i>{{
@@ -54,7 +54,7 @@
 
       <div class="desc">
         <span>简介：</span>
-        <p>{{ songDetailData.description }}...</p>
+        <p>{{ getDesc }}</p>
       </div>
     </div>
   </div>
@@ -70,6 +70,36 @@ export default {
         return {};
       },
     },
+    themetype: {
+        type: String,
+        default: "歌曲"
+    },
+    tags: {
+      type: Boolean,
+      default: true
+    },
+    isShowBase: {
+      type: Boolean,
+      default: true
+    }
+  },
+  computed:{
+    /**对传不同键名过来数据处理 */
+    getCoverImgUrl(){
+      return this.songDetailData.coverImgUrl || this.songDetailData.picUrl
+    },
+    getCreateImg(){
+      return this.songDetailData.dj.avatarUrl
+    },
+    getTrackCount(){
+      return this.songDetailData.trackCount || this.songDetailData.programCount
+    },
+    getSubscribedCount(){
+      return this.songDetailData.subscribedCount || this.songDetailData.subCount
+    },
+    getDesc(){
+      return this.songDetailData.desc || this.songDetailData.description
+    }
   },
   filters: {
     playCount(value) {
@@ -90,6 +120,13 @@ export default {
 </script>
 
 <style scoped>
+.song_detail {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: auto;
+  width: 100%;
+  padding-top: 30px;
+}
 .song_detail_info_left {
   width: 20%;
   margin: 0 20px;

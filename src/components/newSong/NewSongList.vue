@@ -11,7 +11,7 @@
     <div v-if="newSongData.length === 0">
       <Loading></Loading>
     </div>
-    <div v-else class="new_song_list_item" v-for="(item,index) in newSongData.slice(0,limitEnd)" :key="index">
+    <div v-else class="new_song_list_item" v-for="(item,index) in newSongData.slice(0,limitEnd)" :key="index" @dblclick="newSongClick(item.id)">
       <div class="sort">{{index+1}}</div>
       <div class="img">
         <img
@@ -34,6 +34,9 @@
 
 <script>
 import Loading from "@/components/loading/Loading";
+
+import { getMusiUrl, getMusicMenu } from "@/network/home.js";
+
 
 import {formatDate} from "@/until";
 export default {
@@ -61,6 +64,7 @@ export default {
       isShow: true,
       limitEnd: 10,
       titles: "",
+      id: "",
     }
   },
   created(){
@@ -77,6 +81,32 @@ export default {
     showMore(){
       this.isShow = false
       this.limitEnd = this.newSongData.length
+    },
+    /**
+     * 网络请求
+     */
+    getMusiUrl(id) {
+      //获取歌曲播放路径
+      getMusiUrl(id).then((res) => {
+        // console.log(res)
+        this.$store.commit("nowMusic", res.data.data[0].url);
+      });
+    },
+    getMusicMenu(id) {
+      getMusicMenu(id).then((res) => {
+        console.log(res);
+        this.$store.commit("nowMusicMenu",res.data.songs[0])
+      });
+    },
+
+
+    /***
+     * 事件处理
+     */
+    newSongClick(id){
+      this.id = id
+      this.getMusiUrl(this.id)
+      this.getMusicMenu(this.id)
     }
   }
 };

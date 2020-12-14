@@ -1,17 +1,4 @@
-<!--
- * @name: 
- * @test: test font
- * @msg: 
- * @param: 
- * @return: 
--->
-<!--
- * @name: 
- * @test: test font
- * @msg: 
- * @param: 
- * @return: 
--->
+
 
 <template>
   <div class="main">
@@ -30,18 +17,20 @@
 import TopTabBar from "./components/topTabBar/TopTabBar"
 import Center from "./views/center/Center"
 import Bottom from "./components/bottomBar/BottomBar"
+
 export default {
   components:{
     TopTabBar,
     Center,
     Bottom
-  }
+  },
+
 }
 </script>
 <style scoped>
 #app{
   width: 1280px;
-  margin: 50px auto;
+  margin: 0px auto;
   position: relative;
   background: #fff;
 }
@@ -58,5 +47,6 @@ export default {
   top: 0;
   left: 0;
 }
+
 
 </style>

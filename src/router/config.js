@@ -1,14 +1,7 @@
-/*
- * @name: 
- * @test: test font
- * @msg: 
- * @param: 
- * @return: 
- */
 export default {
-    mode: 'history',
+    mode: 'hash',
     routes: [{
-            path: '/',
+            path: '*',
             redirect() {
                 return '/home/rTsyle'
             },
@@ -27,7 +20,7 @@ export default {
                     component: () =>
                         import ("@/views/right/rmenu/RTstyle.vue"),
                     meta: {
-                        index: 2
+                        index: 2,
                     }
                 },
                 {
@@ -36,7 +29,8 @@ export default {
                     component: () =>
                         import ("@/views/right/rmenu/RsongList.vue"),
                     meta: {
-                        index: 3
+                        index: 3,
+
                     }
                 },
                 {
@@ -45,7 +39,7 @@ export default {
                     component: () =>
                         import ("@/views/right/rmenu/RAnchorRadio.vue"),
                     meta: {
-                        index: 4
+                        index: 4,
                     }
                 },
                 {
@@ -54,7 +48,7 @@ export default {
                     component: () =>
                         import ("@/views/right/rmenu/Rrank.vue"),
                     meta: {
-                        index: 5
+                        index: 5,
                     }
                 },
                 {
@@ -63,7 +57,7 @@ export default {
                     component: () =>
                         import ("@/views/right/rmenu/Rsinger.vue"),
                     meta: {
-                        index: 6
+                        index: 6,
                     }
                 },
                 {
@@ -72,7 +66,7 @@ export default {
                     component: () =>
                         import ("@/views/right/rmenu/RnewMusic.vue"),
                     meta: {
-                        index: 7
+                        index: 7,
                     }
                 }
             ]
@@ -100,6 +94,42 @@ export default {
             name: '搜索',
             component: () =>
                 import ("@/components/search/Search"),
+            meta: {
+                index: -1
+            }
+        },
+        {
+            path: '/anchor/:id',
+            name: '电台信息',
+            component: () =>
+                import ("@/components/anchor/AnthorDetail"),
+            meta: {
+                index: -1
+            }
+        },
+        {
+            path: "/singerDetail/:id",
+            name: "歌手详情",
+            component: () =>
+                import ("@/components/singer/SingDetail"),
+            meta: {
+                index: -1
+            }
+        },
+        {
+            path: "/moreList/:name",
+            name: "更多列表",
+            component: () =>
+                import ("@/components/moreList/MoreList"),
+            meta: {
+                index: -1
+            }
+        },
+        {
+            path: "/mvPlay/:id",
+            name: "mv播放",
+            component: () =>
+                import ("@/components/mvPlay/MvPlay"),
             meta: {
                 index: -1
             }

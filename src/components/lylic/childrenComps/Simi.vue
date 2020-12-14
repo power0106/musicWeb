@@ -1,5 +1,6 @@
+
 <template>
-  <div class="simi_item">
+  <div class="simi_item" @click="simiSongClick(simiData.id)">
     <div class="img">
       <img :src="simiData.album.picUrl" alt="" />
     </div>
@@ -22,6 +23,8 @@
 
 <script>
 import { formatDate } from "@/until";
+
+import { getMusiUrl, getMusicMenu } from "@/network/home.js";
 export default {
   props: {
     simiData: {
@@ -36,6 +39,28 @@ export default {
       return formatDate(new Date(value), "mm:ss");
     },
   },
+  methods:{
+    getMusiUrl(id) {
+      //获取歌曲播放路径
+      getMusiUrl(id).then((res) => {
+        // console.log(res)
+        this.$store.commit("nowMusic", res.data.data[0].url);
+      });
+    },
+    getMusicMenu(id) {
+      getMusicMenu(id).then((res) => {
+        console.log(res);
+        this.$store.commit("nowMusicMenu",res.data.songs[0])
+      });
+    },
+    simiSongClick(id){
+      this.getMusiUrl(id)
+      this.getMusicMenu(id)
+      this.$router.replace({
+        path: "/lylic/"+id
+      })
+    }
+  }
 };
 </script>
 

@@ -1,16 +1,16 @@
 <template>
   <div class="pay_card">
-    <div class="pay_card_item" v-for="(item,index) in payData" :key="index">
+    <div class="pay_card_item" v-for="(item,index) in payData" :key="index" @click="payDj(item.id)">
       <div class="pay_card_content">
         <div class="left">
           <img v-lazy="item.picUrl" alt="">
-          <div class="time">1970年01月01日...</div>
+          <div class="time" :style="{textAlign: align}">1970年01月01日...</div>
         </div>
         <div class="right">
-          <div class="title">{{item.name}}</div>
-          <div class="desc">{{item.rcmdText}}</div>
+          <div class="title"><span class="type" v-if="isType">MV</span>{{item.name}}</div>
+          <div class="desc" v-if="isDesc">{{item.rcmdText}}</div>
           <div class="info">{{item.lastProgramName}}</div>
-          <div class="price">￥ {{item.originalPrice}}</div>
+          <div class="price" v-if="isPrice">￥ {{item.originalPrice}}</div>
         </div>
       </div>
     </div>
@@ -25,6 +25,29 @@ export default {
       default(){
         return []
       }
+    },
+    align: {
+      type: String,
+      default: "left"
+    },
+    isType: {
+      type: Boolean,
+      default: false
+    },
+    isDesc: {
+      type: Boolean,
+      default: true
+    },
+    isPrice: {
+      type: Boolean,
+      default: true
+    }
+  },
+  methods:{
+    payDj(id){
+      this.$router.push({
+        path: "/anchor/"+id
+      })
     }
   }
 }
@@ -71,6 +94,7 @@ export default {
   white-space: nowrap;
   width: 100%;
   box-sizing: border-box;
+
 }
 .right{
   margin-left: 10px;
@@ -82,6 +106,13 @@ export default {
   font-size: 16px;
   color: #666;
   margin-bottom: 10px;
+  max-width: 208px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-wrap: break-word;
+
 }
 .desc,.info{
   font-size: 13px;

@@ -31,6 +31,19 @@ export function getPersonalized() {
 }
 
 /**
+ * 获取独家放送列表
+ */
+export function getPersonalizedList(limit, offset) {
+    return requset({
+        url: "/personalized/privatecontent/list",
+        params: {
+            limit,
+            offset
+        }
+    })
+}
+
+/**
  * 获取最新音乐数据
  */
 export function getNewSong() {

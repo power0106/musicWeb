@@ -1,8 +1,16 @@
+<!--
+ * @name: 
+ * @test: test font
+ * @msg: 
+ * @param: 
+ * @return: 
+-->
 
 <template>
   <div class="title" :style="{width: width+'%'}">
     <h3 :style="{fontSize: size+'px'}">{{title}}</h3>
     <span class="nums" v-if="comment">共{{count | getCount}}条评论</span>
+    <span v-if="qi" class="qi">共{{phase}}期</span>
     <div class="more" v-if="isMore">
       <span>更多</span>
       <i class="el-icon-arrow-right"></i>
@@ -37,6 +45,14 @@ export default {
     count:{
       type: Number,
       default: 0
+    },
+    qi: {
+      type: Boolean,
+      default: false
+    },
+    phase: {
+      type: Number,
+      default: 0
     }
   },
   filters: {
@@ -49,6 +65,8 @@ export default {
       }
       return result
     }
+  },
+  methods:{
   }
 };
 </script>
@@ -69,6 +87,7 @@ export default {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+  cursor: pointer;
 }
 .more span{
   color: #999;

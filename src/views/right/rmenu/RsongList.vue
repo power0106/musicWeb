@@ -1,27 +1,34 @@
 <template>
   <div class="r_song_list">
-    <HotTab
-      :hotTabList="hotTabList"
-      @hotTabClick="hotTabClick(arguments)"
-    ></HotTab>
-    <div class="music_list" >
+    <HotTab :hotTabList="hotTabList" @hotTabClick="hotTabClick(arguments)"></HotTab>
+    <div class="music_list">
       <MusicListItem
-        v-for="(item,index) in hotTabListData" :key="index"
+        v-for="(item,index) in hotTabListData"
+        :key="index"
         :music-list-item-data="item"
         :right-txt="true"
       ></MusicListItem>
-      <TurnPage :total="total" class="turn" @turnPageData="turnPageData(arguments)"></TurnPage>
+      <TurnPage :total="total" class="turn" @turnPageData="turnPageData(arguments)" :pagesize="30"></TurnPage>
     </div>
   </div>
 </template>
 
 <script>
-import DropDown from "@/components/dropdown/DropDown";
-import HotTab from "@/components/hotTab/HotTab";
-import MusicListItem from "@/components/musiclist/MusicListItem";
-import TurnPage from "@/components/turnPage/TurnPage";
+import DropDown from '@/components/dropdown/DropDown'
+import HotTab from '@/components/hotTab/HotTab'
+import MusicListItem from '@/components/musiclist/MusicListItem'
+import TurnPage from '@/components/turnPage/TurnPage'
 
-import { getHotTabs, getHotTabsData } from "@/network/songs.js";
+import { getHotTabs, getHotTabsData } from '@/network/songs.js'
+import { itemListenMixin } from '@/until/mixin.js'
+
+let homeScrollTop = 0
+document
+  .getElementsByClassName('c_main_center')[0]
+  .addEventListener('scroll', function () {
+    homeScrollTop = document.getElementsByClassName('c_main_center')[0]
+      .scrollTop
+  })
 export default {
   components: {
     DropDown,
@@ -29,18 +36,21 @@ export default {
     MusicListItem,
     TurnPage,
   },
+  props: ['home'],
+  mixins: [itemListenMixin],
   data() {
     return {
       hotTabList: [],
       hotTabListData: [],
-      currentType: "全部",
+      currentType: '全部',
       offset: 0,
       total: 0,
-    };
+      scrollTop: 0,
+    }
   },
   created() {
-    this.getHotTabs();
-    this.getHotTabsData(this.currentType,this.offset)
+    this.getHotTabs()
+    this.getHotTabsData(this.currentType, this.offset)
   },
   methods: {
     /**
@@ -51,16 +61,17 @@ export default {
       getHotTabs().then((res) => {
         // console.log(res)
         let all = {
-          name: "全部"
+          name: '全部',
         }
         this.hotTabList.push(all)
-        this.hotTabList.push(...res.data.tags);
-        console.log(this.hotTabList.length);
-      });
+        this.hotTabList.push(...res.data.tags)
+        console.log(this.hotTabList.length)
+      })
       // console.log(this.hotTabListData);
     },
-    getHotTabsData(currentType, offset){ //获取各个分类标签数据
-      getHotTabsData(currentType,offset).then(res=>{
+    getHotTabsData(currentType, offset) {
+      //获取各个分类标签数据
+      getHotTabsData(currentType, offset).then((res) => {
         console.log(res)
         this.total = res.data.total
         this.hotTabListData = res.data.playlists
@@ -70,31 +81,49 @@ export default {
     /**
      * 事件处理
      */
-    hotTabClick(e) { //点击分类标签后响应对应数据
+    hotTabClick(e) {
+      //点击分类标签后响应对应数据
       this.currentType = e[0]
-      this.getHotTabsData(e[0],0)
-      // console.log(e[0], e[1]);
+      this.getHotTabsData(e[0], 0)
+      // console.log(e[0], e[1])
     },
-    turnPageData(e){ // 分页拉去数据
+    turnPageData(e) {
+      // 分页拉去数据
       this.offset = e[0]
       console.log(e[0])
-      this.getHotTabsData(this.currentType,this.offset)
-    }
+      this.getHotTabsData(this.currentType, this.offset)
+      console.log(this.home.scrollTop)
+      this.backTop()
+    },
+    backTop() {
+      //回到顶部
+      let timer = setInterval(() => {
+        let ispeed = -200
+        document.getElementsByClassName(
+          'c_main_center'
+        )[0].scrollTop = document.getElementsByClassName('c_main_center')[0].scrollTop =
+          homeScrollTop + ispeed
+        if (homeScrollTop === 0) {
+          clearInterval(timer)
+        }
+        // console.log(this.scrolltop)
+      }, 16)
+    },
   },
   watch: {
     hotTabList() {
       for (let i = 0; i < this.hotTabList.length; i++) {
-        let list = this.hotTabList[i].name;
+        let list = this.hotTabList[i].name
         // console.log(list)
         this.hotTabListData[list] = {
           page: 0,
           list: [],
-        };
+        }
       }
       // console.log(this.hotTabListData["华语"]);
     },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -110,5 +139,4 @@ export default {
   margin: 10px auto;
   justify-content: space-between;
 }
-
 </style>

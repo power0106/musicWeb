@@ -1,10 +1,3 @@
-/*
- * @name: 
- * @test: test font
- * @msg: 
- * @param: 
- * @return: 
- */
 export default {
     getNowMusic(state) {
         if (state.nowmusic === null) {
@@ -17,7 +10,7 @@ export default {
         if (state.musicmenu.al === undefined) {
             return {
                 al: {
-                    picUrl: require('../assets/img/common/loading.png'),
+                    picUrl: require('../assets/img/playMusic/music.jpg'),
                     name: '歌名',
                     pic: 0,
                     id: 0,

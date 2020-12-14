@@ -35,7 +35,7 @@
           >播放全部</el-button
         >
         <el-button size="small" icon="el-icon-star-off"
-          >收藏({{ songDetailData.subscribedCount }})</el-button
+          >收藏({{ songDetailData.subscribedCount | playCount}})</el-button
         >
         <el-button size="small" icon="el-icon-thumb"
           >分享({{ songDetailData.shareCount }})</el-button
@@ -51,16 +51,17 @@
           }}</i></span
         >
       </div>
-
+      
+      <span class="jian">简介：</span>
       <div class="desc">
-        <span>简介：</span>
+        
         <p>{{ songDetailData.description }}...</p>
       </div>
     </div>
     <!-- <SongDetailInfo :songDetailData="songDetailData"></SongDetailInfo> -->
 
     <div class="song_tab">
-      <el-tabs v-model="activeName" style="marginleft: 50px">
+      <el-tabs v-model="activeName" style="marginleft: 50px" @tab-click="handleClick">
         <el-tab-pane :label="songlist" name="list"> 
           <SongsTable :trackIds="trackIds"></SongsTable>
         </el-tab-pane>
@@ -125,41 +126,78 @@ export default {
       let date = new Date(value);
       return formatDate(date, "yyyy-MM-dd");
     },
+    
   },
   created() {
     //拿到对应id
     this.id = this.$route.params.id;
-    this.getSongDetail();
-    this.getSongCommend();
-    this.getSubscriber();
+    this.getSongDetail(this.id);
+    // this.getSongCommend(this.id);
+    // this.getSubscriber(this.id);
   },
   methods: {
-    getSongDetail() {
+    /**
+     * 网络请求
+     */
+    getSongDetail(id) {
       //获取目标歌曲详细信息
-      getSongDetail(this.id).then((res) => {
-        // console.log(res);
+      getSongDetail(id).then((res) => {
+        console.log(res);
         this.songDetailData = res.data.playlist;
         console.log({...res.data.playlist})
         // this.$set(this.songDetailData,{...res.data.playlist})
         // Object.assign({},this.songDetailData,res.data.playlist)
-        this.songlist = "歌曲列表("+res.data.playlist.trackCount+")";
-        this.commend = "评论(" + res.data.playlist.commentCount + ")";
-        this.shoucang = "收藏者(" + res.data.playlist.subscribedCount + ")";
+        let trackCount = this.numFormat(res.data.playlist.trackCount),
+            commentCount = this.numFormat(res.data.playlist.commentCount),
+            shoucang = this.numFormat(res.data.playlist.subscribedCount);
+        this.songlist = "歌曲列表("+ trackCount +")";
+        this.commend = "评论(" + commentCount + ")";
+        this.shoucang = "收藏者(" + shoucang + ")";
         this.trackIds.push(...res.data.playlist.trackIds)
       });
       console.log(this.songDetailData)
     },
-    getSongCommend() { //获取目标歌曲评论信息
-      getSongCommend(this.id).then((res) => {
+    
+    getSongCommend(id) { //获取目标歌曲评论信息
+      getSongCommend(id).then((res) => {
         // console.log(res)
         this.songCommendData = res.data.comments;
       });
     },
-    getSubscriber() { //获取目标歌曲收藏者信息
-      getSubscriber(this.id).then((res) => {
+    getSubscriber(id) { //获取目标歌曲收藏者信息
+      getSubscriber(id).then((res) => {
         console.log(res);
         this.songSubscriberData = res.data.subscribers;
       });
+    },
+
+    /**
+     * 事件处理
+     */
+    handleClick(tab,event){
+      switch(tab.name){
+        case "comment":
+          this.getSongCommend(this.id)
+          break;
+        case "shoucang":
+          this.getSubscriber(this.id)
+          break;
+        default:
+          this.getSongDetail(this.id)
+      }
+    },
+
+    /**
+     * 方法
+     */
+    numFormat(val){ //数量格式化
+      let rs = null
+      if(val >= 10000){
+        rs = (val / 10000).toFixed(1)+"万"
+      }else{
+        rs = val
+      }
+      return rs
     },
   },
   watch:{
@@ -256,8 +294,14 @@ export default {
   margin: 0 5px;
   font-size: 14px;
 }
+.jian{
+  font-size: 13px;
+  position: relative;
+  top: 15px;
+}
 .desc {
   line-height: 20px;
+  text-indent: 2em;
 }
 .desc p {
   display: inline-block;

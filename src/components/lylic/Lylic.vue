@@ -88,6 +88,7 @@ import SongCommend from "@/components/songDetail/childrenComps/SongCommend";
 import TurnPage from "@/components/turnPage/TurnPage";
 
 import { mapGetters } from "vuex";
+import {itemListenMixin} from "@/until/mixin.js"
 export default {
   components: {
     ModuleTitle,
@@ -95,6 +96,7 @@ export default {
     TurnPage,
     Simi
   },
+  mixins: [itemListenMixin],
   data() {
     return {
       id: "",
@@ -170,7 +172,7 @@ export default {
             //对象{t:时间,c:歌词}加入ms数组
             // t: t,
             t: (parseFloat(s[0]) * 60 + parseFloat(s[1])).toFixed(3),
-            c: content === "" ? "暂无歌词" : content,
+            c: content === "" ? "" : content,
           });
         }
       }
@@ -194,6 +196,7 @@ export default {
         this.simiData = res.data.songs
       })
     },
+    
 
     /**
      * 图片旋转
@@ -214,7 +217,8 @@ export default {
       console.log(e[0])
       this.offset = e[0]
       this.getMusicComment(this.id,this.limit,this.offset)
-    }
+      this.backTop()
+    },
   },
   watch: {
     getIsPlay() {
@@ -228,6 +232,13 @@ export default {
         this.timer = setInterval(this.imgRotate, 100);
       }
     },
+    $route(to){
+      console.log(to)
+      this.id = to.params.id
+      this.getLylic(this.id)
+      this.getMusicComment(this.id)
+      getSimiSong(this.id)
+    }
   },
   destroyed(){
     clearInterval(this.timer)

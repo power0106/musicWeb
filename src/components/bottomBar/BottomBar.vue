@@ -14,15 +14,16 @@
         :disabled="isUrl"
         @change="musicDurationChange"
         :max="totalDuration"
+        tooltip-class="huakuai"
       ></el-slider>
     </div>
 
     <div class="content">
       <div class="left">
-        <div class="singimg">
-          <img :src="getMusicMenu.al.picUrl" alt="" />
+        <div class="singimg" @click.stop="toLylic">
+          <img :src="getMusicMenu.al.picUrl" alt=""  />
           <div class="m-img">
-            <a href="javascript:void(0)" @click.stop="toLylic">
+            <a href="javascript:void(0)">
               <i
                 class="el-icon-arrow-up"
                 style="color: rgba(255, 255, 255, 0.8)"
@@ -159,6 +160,12 @@ export default {
           this.isplay = false;
           this.$store.commit("setPlay",this.isplay)
           this.musicDuration = 0;
+          console.log("end")
+          setTimeout(() => {
+            audio.loop = "loop"
+            this.playClick()
+          }, 1000);
+
         }
       });
       if(!this.isplay){return;} //如果没有在播放，终止操作
@@ -191,11 +198,14 @@ export default {
 
 <style scoped>
 .bottom_bar {
-  position: relative;
+  position: absolute;
   left: 0;
-  bottom: 0;
+  right: 0;
+  bottom: -70px;
   height: 70px;
-  background: rgba(0, 0, 255, 0.1);
+  /* background: rgba(0, 0, 255, 0.1); */
+  background: #fff;
+  /* z-index: 999; */
 }
 .scroll {
   position: absolute;
@@ -219,6 +229,10 @@ export default {
 .lound .el-slider.is-vertical .el-slider__runway {
   width: 4px;
   display: none;
+  
+}
+.scroll >>> .el-slider__runway{
+  background: rgba(255,255,255,0) !important;
 }
 .lound {
   position: absolute;

@@ -1,6 +1,6 @@
 <template>
   <div class="new_list">
-    <ModuleTitle title="最新音乐"></ModuleTitle>
+    <ModuleTitle title="最新音乐" @click.native="newClick"></ModuleTitle>
     <NewListItem :newSongItemData="newSongData"></NewListItem>
   </div>
 </template>
@@ -19,6 +19,13 @@ export default {
       default(){
         return []
       }
+    }
+  },
+  methods:{
+    newClick(){
+      this.$router.push({
+        path: "rNewMusic"
+      })
     }
   }
 };

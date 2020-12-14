@@ -40,6 +40,21 @@ export function getPaygift() {
 }
 
 /**
+ * 获取付费精选列表
+ * @param {截取数量} limit 
+ * @param {分页} offset 
+ */
+export function getPaylist(limit, offset) {
+    return request({
+        url: "/dj/paygift",
+        params: {
+            limit,
+            offset
+        }
+    })
+}
+
+/**
  * 获取板块内容数据
  */
 export function getRecommendType(type) {
@@ -47,6 +62,48 @@ export function getRecommendType(type) {
         url: "/dj/recommend/type",
         params: {
             type
+        }
+    })
+}
+
+/**
+ * 获取电台分类更多内容列表
+ * @param {电台分类id} cateId 
+ * @param {截取数量} limit 
+ * @param {分页} offset 
+ */
+export function getDjMoreList(cateId, limit, offset) {
+    return request({
+        url: "/dj/radio/hot",
+        params: {
+            cateId,
+            limit,
+            offset
+        }
+    })
+}
+
+/**
+ * 获取电台详情
+ */
+export function getAnchorDetail(rid) {
+    return request({
+        url: "/dj/detail",
+        params: {
+            rid
+        }
+    })
+}
+
+/**
+ * 获取电台专辑歌曲
+ */
+export function getDjAblum(rid, asc = false) {
+    return request({
+        url: "/dj/program",
+        params: {
+            rid,
+            asc
         }
     })
 }

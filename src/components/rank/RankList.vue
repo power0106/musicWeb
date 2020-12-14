@@ -1,6 +1,13 @@
+<!--
+ * @name: 
+ * @test: test font
+ * @msg: 
+ * @param: 
+ * @return: 
+-->
 <template>
   <div class="rank_list">
-    <div class="rank_list_item" v-for="(item,index) in songs" :key="index">
+    <div class="rank_list_item" v-for="(item,index) in songs" :key="index" @dblclick="rankSongClick(item)">
       <span class="num">{{index+1}}</span>
       <span class="mucsicname">{{item.name}}</span>
       <!-- <span class="singer">{{}}</span> -->
@@ -9,7 +16,9 @@
 </template>
 
 <script>
-import {getRankList} from "@/network/rank.js"
+import {getRankList} from "@/network/rank.js";
+
+import { getMusiUrl, getMusicMenu } from "@/network/home.js";
 export default {
   components:{
   },
@@ -20,7 +29,8 @@ export default {
   },
   data(){
     return{
-      songs: []
+      songs: [],
+      musicid: ""
     }
   },
   created(){
@@ -33,6 +43,30 @@ export default {
         console.log(res)
         this.songs.push(...res.data.playlist.tracks.slice(0,10))
       })
+    },
+    getMusiUrl(id) {
+      //获取歌曲播放路径
+      getMusiUrl(id).then((res) => {
+        // console.log(res)
+        this.$store.commit("nowMusic", res.data.data[0].url);
+      });
+    },
+    getMusicMenu(id) {
+      getMusicMenu(id).then((res) => {
+        console.log(res);
+        this.$store.commit("nowMusicMenu",res.data.songs[0])
+      });
+    },
+
+
+    /**
+     * 事件处理
+     */
+    rankSongClick(val){
+      console.log(val)
+      this.musicid = val.id
+      this.getMusiUrl(this.musicid)
+      this.getMusicMenu(this.musicid)
     }
   },
   watch:{
@@ -53,6 +87,7 @@ export default {
   display: flex;
   width: 100%;
   align-items: center;
+  cursor: pointer;
 }
 .rank_list_item:nth-child(even){
   background: #f4f4f4;

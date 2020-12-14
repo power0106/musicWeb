@@ -28,13 +28,12 @@
       :isMore="false"
     ></ModuleTitle>
     <div class="card">
-      <Card
+      <SingerCard
         v-for="(item, index) in singerData"
         :key="index"
         :item="item"
-        :width="18"
-        titlecolor="red"
-      ></Card>
+        @click.native="singerClick(item.id)"
+      ></SingerCard>
     </div>
   </div>
 </template>
@@ -42,14 +41,14 @@
 <script>
 import Filtrate from "@/components/filtrate/Filtrate";
 import ModuleTitle from "@/components/moduleTitle/ModuleTitle";
-import Card from "@/components/anchor/Card";
+import SingerCard from "@/components/singer/SingCard";
 
 import { getSinger } from "@/network/singer.js";
 export default {
   components: {
     Filtrate,
     ModuleTitle,
-    Card,
+    SingerCard,
   },
   data() {
     return {
@@ -160,6 +159,17 @@ export default {
       }
       this.getSinger(this.type, this.initial, this.area, this.limit);
     },
+
+
+    /**
+     * 事件处理
+     */
+    singerClick(id){
+      // console.log(id)
+      this.$router.push({
+        path: "/singerDetail/"+id
+      })
+    }
   },
 };
 </script>
